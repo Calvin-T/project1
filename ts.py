@@ -1,21 +1,18 @@
 import socket
-
-
 import sys
 """Top level name server program"""
 
 tsListenPort=0
 if len(sys.argv) == 2:
-    # check that this is an integer, make sure that it is non-neg
-    if sys.argv[1].isdigit():
-        tsListenPort = int(sys.argv[1])
-    else:
-        # error, invalid port number and exit program
+    # check that this is an integer
+    try:
+        tsListenPort=int(sys.argv[1])
+    except ValueError:
         exit(1)
+
 else:
     # error, too many or too few command line args-> exit()
     exit(1)
-
 
 TS_DNS_Table = {}
 
