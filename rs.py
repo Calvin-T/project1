@@ -18,14 +18,13 @@ if __name__ == '__main__':
 	
 
 rsListenPort = 0
-
 if len(sys.argv) == 2:
     #check that this is an integer, make sure that it is non-neg
-    if sys.argv[1].isdigit():
+    try:
         rsListenPort = int(sys.argv[1])
-    else:
-        # error, invalid port number and exit program
+    except ValueError:
         exit(1)
+
 else:
     # error, too many or too few command line args-> exit()
     exit(1)
