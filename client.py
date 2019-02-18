@@ -4,6 +4,7 @@ import sys
 """Client program to connect to root and top level name servers"""
 #python client.py rsHostname rsListenPort tsListenPort
 
+
 rsHostName=""
 rsListenPort = 0
 tsListenPort = 0
@@ -11,11 +12,18 @@ tsListenPort = 0
 # get command line arguments
 if len(sys.argv) == 4:
     rsHostName = str(sys.argv[1])
-    rsListenPort = int(sys.argv[2]) #TODO add a check to make sure int cast works
-    tsListenPort = int(sys.argv[3])
-    print(rsHostName)
-    print(rsListenPort)
-    print(tsListenPort)
+    try:
+        rsListenPort = int(sys.argv[2])
+    except ValueError:
+        exit(1)
+    try:
+        tsListenPort = int(sys.argv[3])
+    except ValueError:
+        exit(1)
+
+    #print(rsHostName)
+    #print(rsListenPort)
+    #print(tsListenPort)
 else:
     print("Invalid Command Line Arguments")
     exit(1)
@@ -34,7 +42,7 @@ rsSocket.connect(rsServer_binding)
 
 
 # socket to talk to ts server, have to get address from rs server first
-tsHostName = "localhost"  # for testing purposes, will get actual tsHostName from rs server
+tsHostName = "localhost"  # for testing purposes rn, will get actual tsHostName from rs server
 try:
     tsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     print("[C]: TS Client socket created")
@@ -42,18 +50,31 @@ except socket.error as err:
     print('socket open error: {} \n'.format(err))
     exit()
 
-tsServer_addr = socket.gethostbyname(socket.gethostname())
+tsServer_addr = socket.gethostbyname(tsHostName)
 tsServer_binding=(tsServer_addr, tsListenPort)
-tsSocket.connect(tsServer_binding)
+#tsSocket.connect(tsServer_binding)
 
 
-# enclose this in a while loop -> while iterating through file, close both sockets when done with file
 # Receive data from the server
 data_from_RSserver = rsSocket.recv(200)
 print("[C]: Data received from  rs server: {}".format(data_from_RSserver.decode('utf-8')))
 
-data_from_TSserver = tsSocket.recv(200)
-print("[C]: Data received from ts server: {}".format(data_from_TSserver.decode('utf-8')))
+#data_from_TSserver = tsSocket.recv(200)
+#print("[C]: Data received from ts server: {}".format(data_from_TSserver.decode('utf-8')))
+
+
+with open("PROJI-HNS.txt") as file:
+    lines = [line.rstrip('\r\n') for line in file]
+    for line in lines:
+        print("[C]: "+ line)
+        rsSocket.send(line.encode('utf-8'))
+        data_from_RSserver = rsSocket.recv(200)
+        #check if string has NS flag in it-> send to ts server
+        print("[S]: {}".format(data_from_RSserver.decode('utf-8')))
+
+    closing_msg="done"
+    rsSocket.send(closing_msg.encode('utf-8'))
+    #tsSocket.send(closing_msg.encode('utf-8'))
 
 # close the client socket
 rsSocket.close()
