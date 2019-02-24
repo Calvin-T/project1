@@ -22,10 +22,10 @@ def populateData(filename):
 		lineSplit = line.split()
 		TS_DNS_Table[lineSplit[0]] = [lineSplit[1],lineSplit[2]]
 		
-	print(TS_DNS_Table)
+	#print(TS_DNS_Table)
 
-if __name__ == '__main__':
-	populateData("PROJI-DNSTS.txt")
+
+populateData("PROJI-DNSTS.txt")
 	
 	
 try:
@@ -46,8 +46,27 @@ csockid, addr = serverSocket.accept()
 print ("[S]: Got a connection request from a client at {}".format(addr))
 
 # send a intro message to the client.
-msg = "Connected to TS server!"
-csockid.send(msg.encode('utf-8'))
+#msg = "Connected to TS server!"
+#csockid.send(msg.encode('utf-8'))
+
+while True:
+    data_from_client = csockid.recv(200)
+    recv_msg = data_from_client.decode('utf-8')
+    print("[C]: "+ recv_msg)
+
+    recv_msg=recv_msg.lower()
+    if recv_msg == "done":
+        break
+    else:
+        if recv_msg in TS_DNS_Table:
+            values= TS_DNS_Table[recv_msg]
+            send_msg = recv_msg + " " + values[0]+ " " + values[1]
+            print("[S]: "+ send_msg)
+            csockid.send(send_msg.encode('utf-8'))
+        else:
+            send_msg = recv_msg + " - Error: HOST NOT FOUND"
+            print("[S]: " + send_msg)
+            csockid.send(send_msg.encode('utf-8'))
 
 # Close the server socket
 serverSocket.close()

@@ -7,7 +7,6 @@ import sys
 RS_DNS_Table = {}
 TSHostname="" #hold the string to send back to client if there is no match in table
 
-RS_DNS_Table = {}
 
 def populateData(filename):
     lines = [line.rstrip('\r\n') for line in open(filename)]
@@ -57,8 +56,8 @@ csockid, addr = serverSocket.accept()
 print("[S]: Got a connection request from a client at {}".format(addr))
 
 # send a intro message to the client.
-msg = "Connected to RS server"
-csockid.send(msg.encode('utf-8'))
+#msg = "Connected to RS server"
+#csockid.send(msg.encode('utf-8'))
 
 
 while True:
