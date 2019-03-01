@@ -4,3 +4,12 @@ www.ibm.edu
 google.com
 www.google.com
 MX.RUTGERS.EDU
+yahoo.com
+cs.rutgers.edu
+www.cs.rutgers.edu
+www.gmail.com
+www.rutgers.edu
+www.testing.com
+python.CS.rutgers.EDu
+jAvA.cs.Rutgers.Edu
+pYThon.com

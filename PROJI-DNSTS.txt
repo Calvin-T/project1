@@ -4,3 +4,8 @@ mx.rutgers.com 192.64.4.5 A
 grep.cs.princeton.edu 182.49.3.2 A
 www.ibm.com 64.42.3.4 A
 www.google.edu 8.7.45.2 A
+www.gmail.com 345.463.43.2 A
+www.rutgers.edu 234.4.5.2 A
+www.TESTING.com 23.42.5.9 A
+python.cs.rutgers.edu 34.54.76.89 A
+PYTHON.com 98.12.43.5 A
