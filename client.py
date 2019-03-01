@@ -33,7 +33,7 @@ else:
 # socket to talk to rs server
 try:
 	rsSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	print("[C]: RS Client socket created")
+	#print("[C]: RS Client socket created")
 except socket.error as err:
 	print('socket open error: {} \n'.format(err))
 	exit()
@@ -49,26 +49,26 @@ rsSocket.connect(rsServer_binding)
 #data_from_TSserver = tsSocket.recv(200)
 #print("[C]: Data received from ts server: {}".format(data_from_TSserver.decode('utf-8')))
 
-print("")
+#print("")
 
 with open("PROJI-HNS.txt") as file:
 	lines = [line.rstrip('\r\n') for line in file]
 	for line in lines:
-		print("[C]: "+ line)
+		#print("[C]: "+ line)
 		rsSocket.send(line.encode('utf-8'))
 		data_from_RSserver = rsSocket.recv(200)
 		#check if string has NS flag in it-> send to ts server
 		msg_received = data_from_RSserver.decode('utf-8')
-		print("[RS]: " + msg_received)
+		#print("[RS]: " + msg_received)
 		if(msg_received.endswith("NS")):
 			#if tsSocket has not been opened yet do that in first attempt else send and receive
 			for attempt in range(2):
 				try:
-					print("[C]: " + line)
+					#print("[C]: " + line)
 					tsSocket.send(line.encode('utf-8'))
 					data_from_TSserver = tsSocket.recv(200)
 					msg_received = data_from_TSserver.decode('utf-8')
-					print("[TS]: " + msg_received)
+					#print("[TS]: " + msg_received)
 					break;
 				except:
 					#open socket
@@ -83,7 +83,7 @@ with open("PROJI-HNS.txt") as file:
 					tsServer_binding=(tsServer_addr, tsListenPort)
 					tsSocket.connect(tsServer_binding)
 				
-		print("")
+		#print("")
 		results.append(msg_received)
 
 	closing_msg="done"
